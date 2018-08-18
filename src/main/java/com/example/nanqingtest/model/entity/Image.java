@@ -5,23 +5,19 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
-@Table(name = "article")
+@Table(name = "image")
 @Getter
-@Setter
 @ToString
-public class Article {
+public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String contentText;
+    private String url;
 
-    private String coverUrl;
-
-    @OneToMany(mappedBy = "article",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<Image> imageList;
-
+    @ManyToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH},optional = false)
+    @JoinColumn(name = "article_id")
+    private Article article;
 }
