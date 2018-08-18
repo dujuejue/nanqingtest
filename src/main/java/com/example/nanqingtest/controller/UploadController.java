@@ -1,6 +1,9 @@
 package com.example.nanqingtest.controller;
 
 import com.example.nanqingtest.service.UploadService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,7 +17,11 @@ import java.io.FileOutputStream;
 
 @Controller
 public class UploadController {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
     private UploadService uploadService;
+
 
     //跳转到上传文件的页面
     @RequestMapping(value="/gouploadimg", method = RequestMethod.GET)
