@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -17,11 +18,14 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String contentText;
+    private String  author;
 
-    private String coverUrl;
+    private Date createTime;
 
     @OneToMany(mappedBy = "article",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Image> imageList;
+
+    @OneToMany(mappedBy ="article",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<ArticlePart> articlePartList;
 
 }

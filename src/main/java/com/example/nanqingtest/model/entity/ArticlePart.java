@@ -7,20 +7,21 @@ import lombok.ToString;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "image")
+@Table(name="article_part")
 @Getter
 @Setter
 @ToString
-public class Image {
+public class ArticlePart {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    private String url;
+    private String context;
 
     private Integer sort;
 
-    @ManyToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH},optional = false)
+    @ManyToOne(cascade = CascadeType.ALL,optional = false)
     @JoinColumn(name = "article_id")
     private Article article;
+
 }

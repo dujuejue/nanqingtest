@@ -1,30 +1,96 @@
 package com.example.nanqingtest.service;
 
+import com.example.nanqingtest.dao.ArticleDao;
+import com.example.nanqingtest.dao.ArticlePartDao;
+import com.example.nanqingtest.dao.ImageDao;
+import com.example.nanqingtest.model.entity.Article;
+import com.example.nanqingtest.model.entity.ArticlePart;
+import com.example.nanqingtest.model.entity.Image;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class UploadService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @Autowired
+    private ArticlePartDao articlePartDao;
+
+    @Autowired
+    private ArticleDao articleDao;
+
+    @Autowired
+    private ImageDao imageDao;
+
+
+    private List<String> imageUrl=new ArrayList<>();
+
+    private List<String> contextList=new ArrayList<>();
+
+
+    public void saveArticle(String author){
+        Article article=new Article();
+        article.setAuthor(author);
+        article.setCreateTime(new Date());
+        articleDao.save(article);
+        int sort=0;
+        for (String url:imageUrl){
+            Image image=new Image();
+            image.setUrl(url);
+            image.setArticle(article);
+            image.setSort(sort);
+            imageDao.save(image);
+            sort++;
+        }
+        sort=0;
+        for (String text:contextList){
+            ArticlePart articlePart=new ArticlePart();
+            articlePart.setArticle(article);
+            articlePart.setSort(sort);
+            articlePart.setContext(text);
+            articlePartDao.save(articlePart);
+            sort++;
+        }
+        imageUrl.clear();
+        contextList.clear();
+    }
+
+
+    /*
+    * 添加文字内容
+    * */
+    public void uploadText(String context){
+        contextList.add(context);
+    }
+
+
+    /*
+    * 存储图片到本地
+    * */
     public void uploadImage(MultipartFile file) throws Exception {
         String fileName = file.getOriginalFilename();
         String filePath = System.getProperty("user.dir") + File.separator + "image";
 
         this.uploadFile(file.getBytes(), filePath, fileName);
-
-
+        imageUrl.add(filePath+File.separator+fileName);
     }
 
+
+
+
     /*
-     *把图片存储到本地
+     *把文件存储到本地
      * */
-    public static void uploadFile(byte[] file, String filePath, String fileName) throws Exception {
+    private static void uploadFile(byte[] file, String filePath, String fileName) throws Exception {
         File targetFile = new File(filePath);
         if (!targetFile.exists()) {
             targetFile.mkdirs();
@@ -34,4 +100,8 @@ public class UploadService {
         out.flush();
         out.close();
     }
+
+
+
+
 }
