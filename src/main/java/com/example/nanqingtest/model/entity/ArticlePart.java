@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Table(name="article_part")
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "one")
 public class ArticlePart {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,6 +22,7 @@ public class ArticlePart {
 
     @ManyToOne(cascade = CascadeType.ALL,optional = false)
     @JoinColumn(name = "article_id")
+
     private Article article;
 
 }

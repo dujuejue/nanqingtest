@@ -1,5 +1,10 @@
 package com.example.nanqingtest.service;
 
+import com.example.nanqingtest.dao.ArticleDao;
+import com.example.nanqingtest.dao.ArticlePartDao;
+import com.example.nanqingtest.dao.ImageDao;
+import com.example.nanqingtest.model.entity.Article;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -8,6 +13,15 @@ import java.io.*;
 @Service
 public class ArticleService {
 
+    @Autowired
+    private ArticleDao articleDao;
+    @Autowired
+    private ArticlePartDao articlePartDao;
+    @Autowired
+    private ImageDao imageDao;
+    /*
+    * 下载图片
+    * */
     public void getImage(String fileName,HttpServletResponse response){
         // 文件下载的路径
         String filePath =System.getProperty("user.dir") + File.separator + "image";
@@ -48,5 +62,10 @@ public class ArticleService {
                 }
             }
         }
+    }
+
+    public Article getContetnt(Integer id){
+        Article article=articleDao.getOne(id);
+        return article;
     }
 }

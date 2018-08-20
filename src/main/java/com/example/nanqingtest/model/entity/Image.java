@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Table(name = "image")
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "one")
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
