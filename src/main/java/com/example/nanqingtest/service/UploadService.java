@@ -46,7 +46,7 @@ public class UploadService {
         int sort = 0;
         for (String url : imageUrl) {
 
-            Image image=new Image();
+            Image image = new Image();
             image.setUrl(url);
             image.setArticleId(article.getId());
             image.setSort(sort);
@@ -56,7 +56,7 @@ public class UploadService {
         sort = 0;
         for (String text : contextList) {
 
-            ArticlePart articlePart=new ArticlePart();
+            ArticlePart articlePart = new ArticlePart();
             articlePart.setContext(text);
             articlePart.setArticleId(article.getId());
             articlePart.setSort(sort);
@@ -84,7 +84,7 @@ public class UploadService {
         String filePath = System.getProperty("user.dir") + File.separator + "image";
 
         this.uploadFile(file.getBytes(), filePath, fileName);
-        imageUrl.add(filePath + File.separator + fileName);
+        imageUrl.add(fileName);
     }
 
 

@@ -36,4 +36,10 @@
     select id, sort, url, article_id
     from image
   </select>
+  <select id="selectByByArticleId" resultType="string">
+    select url
+    from image
+    where article_id=#{articleId}
+    order by sort
+  </select>
 </mapper>

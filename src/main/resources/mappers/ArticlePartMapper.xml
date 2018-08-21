@@ -36,4 +36,11 @@
     select id, context, sort, article_id
     from article_part
   </select>
+
+  <select id="selectByArticleId" resultType="string">
+    select context
+    from  article_part
+    where article_id=#{articleId}
+    order by sort
+  </select>
 </mapper>

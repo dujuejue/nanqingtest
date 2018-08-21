@@ -1,6 +1,7 @@
 package com.example.nanqingtest.controller;
 
 import com.example.nanqingtest.common.JsonResult;
+import com.example.nanqingtest.model.domain.ArticleContent;
 import com.example.nanqingtest.model.entity.Article;
 import com.example.nanqingtest.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class ArticleController {
 
     @GetMapping("content/{id}")
     public Object getContent(@PathVariable("id") Integer id) {
-        Article article =articleService.getContetnt(id);
-        return JsonResult.ok(article);
+        ArticleContent articleContent =articleService.getContetnt(id);
+        return JsonResult.ok(articleContent);
     }
 }

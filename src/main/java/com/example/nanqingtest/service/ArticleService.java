@@ -1,18 +1,28 @@
 package com.example.nanqingtest.service;
 
 import com.example.nanqingtest.dao.mapper.ArticleMapper;
+import com.example.nanqingtest.dao.mapper.ArticlePartMapper;
+import com.example.nanqingtest.dao.mapper.ImageMapper;
+import com.example.nanqingtest.model.domain.ArticleContent;
 import com.example.nanqingtest.model.entity.Article;
+import com.example.nanqingtest.model.entity.ArticlePart;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.List;
 
 @Service
 public class ArticleService {
 
     @Autowired
     private ArticleMapper articleMapper;
+    @Autowired
+    private ArticlePartMapper articlePartMapper;
+    @Autowired
+    private ImageMapper imageMapper;
     /*
     * 下载图片
     * */
@@ -58,8 +68,18 @@ public class ArticleService {
         }
     }
 
-    public Article getContetnt(Integer id){
+    public ArticleContent getContetnt(Integer id){
+        ArticleContent articleContent=new ArticleContent();
         Article article =articleMapper.selectByPrimaryKey(id);
-        return article;
+        BeanUtils.copyProperties(article,articleContent);
+        List<String> contentList=articlePartMapper.selectByArticleId(id);
+        List<String> imageUrlList=imageMapper.selectByByArticleId(id);
+        for (int i=0;i<imageUrlList.size();i++){
+            String newStr="127.0.0.1:8080/article/get/image/"+imageUrlList.get(i);
+            imageUrlList.set(i,newStr);
+        }
+        articleContent.setContent(contentList);
+        articleContent.setImageUrl(imageUrlList);
+        return articleContent;
     }
 }

@@ -2,6 +2,7 @@ package com.example.nanqingtest.dao.mapper;
 
 import com.example.nanqingtest.model.entity.Image;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -16,4 +17,6 @@ public interface ImageMapper {
     List<Image> selectAll();
 
     int updateByPrimaryKey(Image record);
+
+    List<String> selectByByArticleId(@Param("articleId") Integer articleId);
 }
