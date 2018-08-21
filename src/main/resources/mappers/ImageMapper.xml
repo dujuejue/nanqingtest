@@ -37,6 +37,7 @@
     from image
   </select>
 
+
   <select id="selectByByArticleId" resultType="string">
     select url
     from image
