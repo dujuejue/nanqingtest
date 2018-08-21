@@ -1,31 +1,52 @@
 package com.example.nanqingtest.model.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
-import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
-@Entity
-@Table(name = "article")
-@Getter
-@Setter
-@ToString
-public class Article {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Article implements Serializable {
     private Integer id;
 
-    private String  author;
+    private String author;
 
     private Date createTime;
 
-    @OneToMany(mappedBy = "article",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<Image> imageList;
+    private static final long serialVersionUID = 1L;
 
-    @OneToMany(mappedBy ="article",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<ArticlePart> articlePartList;
+    public Integer getId() {
+        return id;
+    }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author == null ? null : author.trim();
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", author=").append(author);
+        sb.append(", createTime=").append(createTime);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
+    }
 }

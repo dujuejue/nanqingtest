@@ -1,8 +1,8 @@
 package com.example.nanqingtest.service;
 
-import com.example.nanqingtest.dao.ArticleDao;
-import com.example.nanqingtest.dao.ArticlePartDao;
-import com.example.nanqingtest.dao.ImageDao;
+import com.example.nanqingtest.dao.mapper.ArticleMapper;
+import com.example.nanqingtest.dao.mapper.ArticlePartMapper;
+import com.example.nanqingtest.dao.mapper.ImageMapper;
 import com.example.nanqingtest.model.entity.Article;
 import com.example.nanqingtest.model.entity.ArticlePart;
 import com.example.nanqingtest.model.entity.Image;
@@ -22,42 +22,45 @@ import java.util.List;
 public class UploadService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    private ArticlePartDao articlePartDao;
 
     @Autowired
-    private ArticleDao articleDao;
+    private ArticleMapper articleMapper;
 
     @Autowired
-    private ImageDao imageDao;
+    private ImageMapper imageMapper;
+    @Autowired
+    private ArticlePartMapper articlePartMapper;
 
 
-    private List<String> imageUrl=new ArrayList<>();
+    private List<String> imageUrl = new ArrayList<>();
 
-    private List<String> contextList=new ArrayList<>();
+    private List<String> contextList = new ArrayList<>();
 
 
-    public void saveArticle(String author){
-        Article article=new Article();
+    public void saveArticle(String author) {
+
+        Article article = new Article();
         article.setAuthor(author);
         article.setCreateTime(new Date());
-        articleDao.save(article);
-        int sort=0;
-        for (String url:imageUrl){
+        articleMapper.insert(article);
+        int sort = 0;
+        for (String url : imageUrl) {
+
             Image image=new Image();
             image.setUrl(url);
-            image.setArticle(article);
+            image.setArticleId(article.getId());
             image.setSort(sort);
-            imageDao.save(image);
+            imageMapper.insert(image);
             sort++;
         }
-        sort=0;
-        for (String text:contextList){
+        sort = 0;
+        for (String text : contextList) {
+
             ArticlePart articlePart=new ArticlePart();
-            articlePart.setArticle(article);
-            articlePart.setSort(sort);
             articlePart.setContext(text);
-            articlePartDao.save(articlePart);
+            articlePart.setArticleId(article.getId());
+            articlePart.setSort(sort);
+            articlePartMapper.insert(articlePart);
             sort++;
         }
         imageUrl.clear();
@@ -66,25 +69,23 @@ public class UploadService {
 
 
     /*
-    * 添加文字内容
-    * */
-    public void uploadText(String context){
+     * 添加文字内容
+     * */
+    public void uploadText(String context) {
         contextList.add(context);
     }
 
 
     /*
-    * 存储图片到本地
-    * */
+     * 存储图片到本地
+     * */
     public void uploadImage(MultipartFile file) throws Exception {
         String fileName = file.getOriginalFilename();
         String filePath = System.getProperty("user.dir") + File.separator + "image";
 
         this.uploadFile(file.getBytes(), filePath, fileName);
-        imageUrl.add(filePath+File.separator+fileName);
+        imageUrl.add(filePath + File.separator + fileName);
     }
-
-
 
 
     /*
@@ -100,8 +101,6 @@ public class UploadService {
         out.flush();
         out.close();
     }
-
-
 
 
 }

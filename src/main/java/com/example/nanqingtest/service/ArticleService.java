@@ -1,8 +1,6 @@
 package com.example.nanqingtest.service;
 
-import com.example.nanqingtest.dao.ArticleDao;
-import com.example.nanqingtest.dao.ArticlePartDao;
-import com.example.nanqingtest.dao.ImageDao;
+import com.example.nanqingtest.dao.mapper.ArticleMapper;
 import com.example.nanqingtest.model.entity.Article;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,11 +12,7 @@ import java.io.*;
 public class ArticleService {
 
     @Autowired
-    private ArticleDao articleDao;
-    @Autowired
-    private ArticlePartDao articlePartDao;
-    @Autowired
-    private ImageDao imageDao;
+    private ArticleMapper articleMapper;
     /*
     * 下载图片
     * */
@@ -65,7 +59,7 @@ public class ArticleService {
     }
 
     public Article getContetnt(Integer id){
-        Article article=articleDao.getOne(id);
+        Article article =articleMapper.selectByPrimaryKey(id);
         return article;
     }
 }

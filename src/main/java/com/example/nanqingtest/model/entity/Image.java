@@ -1,26 +1,62 @@
 package com.example.nanqingtest.model.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import java.io.Serializable;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "image")
-@Getter
-@Setter
-@ToString(exclude = "one")
-public class Image {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Image implements Serializable {
     private Integer id;
-
-    private String url;
 
     private Integer sort;
 
-    @ManyToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH},optional = false)
-    @JoinColumn(name = "article_id")
-    private Article article;
+    private String url;
+
+    private Integer articleId;
+
+    private static final long serialVersionUID = 1L;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url == null ? null : url.trim();
+    }
+
+    public Integer getArticleId() {
+        return articleId;
+    }
+
+    public void setArticleId(Integer articleId) {
+        this.articleId = articleId;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", sort=").append(sort);
+        sb.append(", url=").append(url);
+        sb.append(", articleId=").append(articleId);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
+    }
 }
