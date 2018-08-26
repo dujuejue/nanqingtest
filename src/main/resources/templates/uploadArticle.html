@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>上传文章</title>
+    <script type="text/javascript" src="http://common.jb51.net/jslib/jquery/jquery.min.js">
+    </script>
+
+</head>
+<body>
+    <p>标题</p>
+<input id="title_input"/>
+    <p>上传封面</p>
+<input id="input_cover" type="file"/>
+    <button id="btn_upload_cover">上传</button>
+    <p>内容</p>
+    <h1 id="content"/>
+    <h1>
+<input id="input_pic" type="file"/>
+<button id="btn_upload_pic">添加图片</button>
+<input id="input_text"/>
+<button id="btn_add_text">添加文字</button>
+    </h1>
+
+
+</body>
+</html>
+<script>
+    $("#title_input").click(function(){
+        console.log("on title input click!")
+    })
+    $("#btn_upload_cover").click(function () {
+        var coverFile = $("#input_cover")[0].files[0]
+        uploadImg(coverFile,function (url) {
+            $("#input_cover").after("<image src='"+url+"'/>")
+        })
+    })
+    $("#btn_add_text").click(function () {
+        var text = $("#input_text")[0].value
+        $("#content").append("<p>"+text+"</p>")
+        $("#input_text")
+    })
+    $("#btn_upload_pic").click(function(){
+        var picFile = $("#input_pic")[0].files[0]
+        uploadImg(picFile,function (url) {
+            $("#content").append("<image src='"+url+"'/>")
+        })
+        $("#input_pic").clear()
+    })
+    function uploadImg(file,urlCallback){
+        var formData = new FormData()
+        formData.append("Token","8069ec7d82b2c89c19ff48c302bf939b1392029f:pjsVoCxYLPSNLdPp1hAvfL1yx8I=:eyJkZWFkbGluZSI6MTUzNTI2ODU1MSwiYWN0aW9uIjoiZ2V0IiwidWlkIjoiNjU4ODU1IiwiYWlkIjoiMTQ4NjMyMSIsImZyb20iOiJmaWxlIn0=")
+        formData.append("file",file)
+        $.ajax({
+            url: 'http://up.imgapi.com/',
+            type: 'POST',
+            success: function(data){
+                console.log(data);
+                $('#res').html(JSON.stringify(data));
+                //alert("上传成功，linkurl:"+data.linkurl);
+                urlCallback(data.linkurl)
+            },
+            error: function(data){
+                console.error(data);
+                alert("上传失败" + JSON.stringify(data));
+            },
+            data:formData,
+            cache: false,
+            contentType: false,
+            processData: false
+        })
+    }
+</script>
