@@ -75,7 +75,7 @@ public class ArticleService {
         List<String> contentList=articlePartMapper.selectByArticleId(id);
         List<String> imageUrlList=imageMapper.selectByByArticleId(id);
         for (int i=0;i<imageUrlList.size();i++){
-            String newStr="127.0.0.1:8080/article/get/image/"+imageUrlList.get(i);
+            String newStr="116.62.242.1:8080/article/get/image/"+imageUrlList.get(i);
             imageUrlList.set(i,newStr);
         }
         articleContent.setContent(contentList);
