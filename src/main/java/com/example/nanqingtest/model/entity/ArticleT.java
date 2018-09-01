@@ -1,6 +1,7 @@
 package com.example.nanqingtest.model.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class ArticleT implements Serializable {
     private Integer id;
@@ -8,6 +9,8 @@ public class ArticleT implements Serializable {
     private String title;
 
     private String cover;
+
+    private Date createTime;
 
     private static final long serialVersionUID = 1L;
 
@@ -35,6 +38,14 @@ public class ArticleT implements Serializable {
         this.cover = cover == null ? null : cover.trim();
     }
 
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -44,6 +55,7 @@ public class ArticleT implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", title=").append(title);
         sb.append(", cover=").append(cover);
+        sb.append(", createTime=").append(createTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
