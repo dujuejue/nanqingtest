@@ -7,10 +7,7 @@ import com.example.nanqingtest.service.ArticleNewService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -23,18 +20,15 @@ public class ArticleNewController {
     @Autowired
     private ArticleNewService articleNewService;
 
-    @PostMapping("downloadlist")
-    public Object downloadlist(@RequestBody Map map)//@RequestBody中的数据以键值对形式存在
+    @GetMapping("downloadlist")
+    public Object downloadlist( @RequestParam("page")Integer page,@RequestParam("pagesize")Integer pagesize)//@RequestBody中的数据以键值对形式存在
     {
-        Integer page = (Integer) map.get("page");
-        Integer pagesize = (Integer) map.get("pagesize");
         List<ArticleT> a = articleNewService.getPage(page,pagesize);
         return JsonResult.ok(a);
     }
 
-    @PostMapping("downloadlist/downloaddetail")
-    public Map downloaddetail(@RequestBody Map map) {
-        Integer id = (Integer) map.get("articleId");
+    @GetMapping("downloadlist/downloaddetail")
+    public Map downloaddetail(@RequestParam("id") Integer id) {
         try {
             ArticleNewContent content = articleNewService.getArticleDetail(id);
             return JsonResult.ok(content);
