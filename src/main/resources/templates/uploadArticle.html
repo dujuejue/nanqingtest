@@ -8,20 +8,30 @@
 
 </head>
 <body>
-    <p>标题</p>
-<input id="title_input"/>
-    <p>上传封面</p>
-<input id="input_cover" type="file"/>
+<p style="text-align: center">标题</p>
+<p style="text-align: center">
+    <input id="title_input"/>
+</p>
+<p style="text-align: center">上传封面</p>
+<p style="text-align: center">
+    <input id="input_cover" type="file"/>
     <button id="btn_upload_cover">上传</button>
-    <p>内容</p>
-    <h1 id="content"/>
-    <h1>
-<input id="input_pic" type="file"/>
-<button id="btn_upload_pic">添加图片</button>
-<input id="input_text"/>
-<button id="btn_add_text">添加文字</button>
-    </h1>
-<p><button id="btn_upload_article">确认上传文章</button> </p>
+</p>
+<p style="text-align: center;">内容</p>
+<h1 style="text-align: center;max-width: 100%;word-wrap: break-word" id="content"/>
+<h1 style="text-align: center">
+    <p style="text-align: center">
+        <input id="input_pic" type="file"/>
+        <button id="btn_upload_pic">添加图片</button>
+    </p>
+    <p style="text-align: center">
+        <textarea id="input_text" style="min-height: 100px;min-width: 300px"></textarea>
+        <button id="btn_add_text">添加文字</button>
+    </p>
+</h1>
+<p style="text-align: center">
+    <button id="btn_upload_article">确认上传文章</button>
+</p>
 
 
 </body>
@@ -33,64 +43,68 @@
 
     $("#btn_upload_cover").click(function () {
         var coverFile = $("#input_cover")[0].files[0]
-        uploadImg(coverFile,function (url) {
-            $("#input_cover").after("<image src='"+url+"'/>")
+        uploadImg(coverFile, function (url) {
+            $("#input_cover").after("<image src='" + url + "'/>")
             cover = url
         })
     })
     $("#btn_add_text").click(function () {
         var text = $("#input_text")[0].value
-        $("#content").append("<p>"+text+"</p>")
+        $("#input_text")[0].value = ""
+        $("#content").append("<p>" + text + "</p>")
         content.push({
-            type:"TEXT",
-            value:text
+            type: "TEXT",
+            value: text
         })
     })
-    $("#btn_upload_pic").click(function(){
+    $("#btn_upload_pic").click(function () {
         var picFile = $("#input_pic")[0].files[0]
-        uploadImg(picFile,function (url) {
-            $("#content").append("<image src='"+url+"'/>")
+        $("#input_pic")[0].outerHTML=$("#input_pic")[0].outerHTML
+        uploadImg(picFile, function (url) {
+            $("#content").append("<image src='" + url + "'/>")
             content.push({
-                type:"IMG",
-                value:url
+                type: "IMG",
+                value: url
             })
         })
     })
-    $("#btn_upload_article").click(function(){
+    $("#btn_upload_article").click(function () {
         uploadArticle()
     })
-    function uploadImg(file,urlCallback){
+
+    function uploadImg(file, urlCallback) {
         var formData = new FormData()
-        formData.append("Token","8069ec7d82b2c89c19ff48c302bf939b1392029f:pjsVoCxYLPSNLdPp1hAvfL1yx8I=:eyJkZWFkbGluZSI6MTUzNTI2ODU1MSwiYWN0aW9uIjoiZ2V0IiwidWlkIjoiNjU4ODU1IiwiYWlkIjoiMTQ4NjMyMSIsImZyb20iOiJmaWxlIn0=")
-        formData.append("file",file)
+        formData.append("Token", "8069ec7d82b2c89c19ff48c302bf939b1392029f:pjsVoCxYLPSNLdPp1hAvfL1yx8I=:eyJkZWFkbGluZSI6MTUzNTI2ODU1MSwiYWN0aW9uIjoiZ2V0IiwidWlkIjoiNjU4ODU1IiwiYWlkIjoiMTQ4NjMyMSIsImZyb20iOiJmaWxlIn0=")
+        formData.append("file", file)
         $.ajax({
             url: 'http://up.imgapi.com/',
             type: 'POST',
-            success: function(data){
+            success: function (data) {
                 console.log(data);
                 $('#res').html(JSON.stringify(data));
                 //alert("上传成功，linkurl:"+data.linkurl);
                 urlCallback(data.linkurl)
             },
-            error: function(data){
+            error: function (data) {
                 console.error(data);
                 alert("上传失败" + JSON.stringify(data));
             },
-            data:formData,
+            data: formData,
             cache: false,
             contentType: false,
             processData: false
         })
     }
+
     function uploadArticle() {
-        title =  $("#title_input")[0].value
+        title = $("#title_input")[0].value
         if (title.length === 0) {
             alert("未填写标题")
-        }else if (cover.length === 0){
+        } else if (cover.length === 0) {
             alert("未上传封面")
-        }else if (content.length === 0) {
+        } else if (content.length === 0) {
             alert("未添加内容")
-        }else {
+        } else {
             var data = {
                 title: title,
                 cover: cover,
@@ -100,9 +114,11 @@
                 url: 'http://116.62.242.1:8080/upload/article/content',
                 type: "POST",
                 data: JSON.stringify(data),
-                contentType: "application/json;charset=utf-8",
+                contentType: "application/json",
                 success: function (res) {
                     console.log(JSON.stringify(res))
+                    alert("上传成功")
+                    location.reload()
                 }
             })
         }
