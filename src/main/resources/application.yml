@@ -13,3 +13,10 @@ spring:
 mybatis:
   mapper-locations: classpath:mappers/*.xml
   type-aliases-package: com.example.nanqingtest.model.entity
+
+server:
+  port: 443
+  ssl:
+    key-store: *.p12
+    key-store-password: 123456
+    key-store-type: PKCS12
