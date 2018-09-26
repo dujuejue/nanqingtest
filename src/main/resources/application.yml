@@ -20,4 +20,4 @@ server:
     key-store-password: 123456
     key-store-type: JKS
     key-alias: tomcat
-  port: 8443
+  port: 8080
