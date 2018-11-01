@@ -16,8 +16,8 @@ mybatis:
 
 server:
   ssl:
-    key-store: .keystore
+    key-store: keystore.jks
     key-store-password: 123456
     key-store-type: JKS
-    key-alias: tomcat
-  port: 8080
+    key-alias: 1
+  port: 8443
